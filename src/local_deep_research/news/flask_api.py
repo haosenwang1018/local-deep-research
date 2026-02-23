@@ -150,7 +150,7 @@ def create_subscription() -> Dict[str, Any]:
         return jsonify({"error": "Invalid JSON data"}), 400
 
     try:
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         # Get current user
@@ -223,7 +223,7 @@ def vote_on_news() -> Dict[str, Any]:
     """
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         # Get current user
@@ -265,7 +265,7 @@ def get_batch_feedback() -> Dict[str, Any]:
     """
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         card_ids = data.get("card_ids", [])
@@ -301,7 +301,7 @@ def submit_feedback(card_id: str) -> Dict[str, Any]:
     """
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         # Get current user
@@ -423,7 +423,7 @@ def update_subscription(subscription_id: str) -> Dict[str, Any]:
         return jsonify({"error": "Invalid JSON data"}), 400
 
     try:
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         # Prepare update data
@@ -631,7 +631,7 @@ def save_preferences() -> Dict[str, Any]:
     """Save user preferences for news."""
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No JSON data provided"}), 400
 
         # Get current user
@@ -1165,6 +1165,8 @@ def create_folder():
     """Create a new folder"""
     try:
         data = request.json
+        if data is None:
+            return jsonify({"error": "Request body must be valid JSON"}), 400
 
         if not data.get("name"):
             return jsonify({"error": "Folder name is required"}), 400
@@ -1198,6 +1200,8 @@ def update_folder(folder_id):
     """Update a folder"""
     try:
         data = request.json
+        if data is None:
+            return jsonify({"error": "Request body must be valid JSON"}), 400
 
         with get_user_db_session() as session:
             manager = FolderManager(session)
@@ -1264,6 +1268,8 @@ def update_subscription_folder(subscription_id):
     """Update a subscription (mainly for folder assignment)"""
     try:
         data = request.json
+        if data is None:
+            return jsonify({"error": "Request body must be valid JSON"}), 400
         logger.info(
             f"Updating subscription {subscription_id} with data: {data}"
         )

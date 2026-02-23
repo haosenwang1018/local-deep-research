@@ -1328,6 +1328,13 @@ def api_save_research_rating(research_id):
             ), 401
 
         data = request.get_json()
+        if data is None:
+            return jsonify(
+                {
+                    "status": "error",
+                    "message": "Request body must be valid JSON",
+                }
+            ), 400
         rating_value = data.get("rating")
 
         if (
@@ -1696,7 +1703,7 @@ def api_cost_calculation():
     try:
         data = request.get_json()
 
-        if not data:
+        if data is None:
             return jsonify({"error": "No data provided"}), 400
 
         model_name = data.get("model_name")

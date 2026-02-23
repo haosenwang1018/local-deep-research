@@ -775,6 +775,8 @@ def download_bulk():
     """Download PDFs or extract text from multiple research sessions."""
     username = session.get("username")
     data = request.json
+    if data is None:
+        return jsonify({"error": "Request body must be valid JSON"}), 400
     research_ids = data.get("research_ids", [])
     mode = data.get("mode", "pdf")  # pdf or text_only
     collection_id = data.get(
@@ -1038,6 +1040,8 @@ def mark_for_redownload():
     service = LibraryService(username)
 
     data = request.json
+    if data is None:
+        return jsonify({"error": "Request body must be valid JSON"}), 400
     document_ids = data.get("document_ids", [])
 
     if not document_ids:
@@ -1257,6 +1261,8 @@ def check_downloads():
     """Check download status for a list of URLs."""
     username = session.get("username")
     data = request.json
+    if data is None:
+        return jsonify({"error": "Request body must be valid JSON"}), 400
     research_id = data.get("research_id")
     urls = data.get("urls", [])
 
@@ -1306,6 +1312,8 @@ def download_source():
     username = session.get("username")
     user_password = get_authenticated_user_password(username)
     data = request.json
+    if data is None:
+        return jsonify({"error": "Request body must be valid JSON"}), 400
     research_id = data.get("research_id")
     url = data.get("url")
 

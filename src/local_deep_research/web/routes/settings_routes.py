@@ -335,7 +335,7 @@ def save_all_settings():
         try:
             # Process JSON data
             form_data = request.get_json()
-            if not form_data:
+            if form_data is None:
                 return (
                     jsonify(
                         {
@@ -914,7 +914,7 @@ def api_update_setting(key):
 
         # Get request data
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No data provided"}), 400
 
         value = data.get("value")
@@ -1815,7 +1815,7 @@ def api_update_search_favorites():
     """Update the list of favorite search engines for the current user"""
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No data provided"}), 400
 
         favorites = data.get("favorites")
@@ -1849,7 +1849,7 @@ def api_toggle_search_favorite():
     """Toggle a search engine as favorite"""
     try:
         data = request.get_json()
-        if not data:
+        if data is None:
             return jsonify({"error": "No data provided"}), 400
 
         engine_id = data.get("engine_id")
@@ -2414,7 +2414,8 @@ def api_cleanup_rate_limiting():
     try:
         from ...web_search_engines.rate_limiting import get_tracker
 
-        days = request.json.get("days", 30) if request.is_json else 30
+        data = request.get_json() if request.is_json else None
+        days = data.get("days", 30) if data is not None else 30
 
         tracker = get_tracker()
         tracker.cleanup_old_data(days)
